@@ -55,6 +55,6 @@ OudyView = {
         complete: function(event){},
         render: function(view){},
         show: function(){},
-        hid: function(){}
+        hide: function(){}
     }
 };
