@@ -1,0 +1,19 @@
+{
+    "name": "oudmane/oudyview",
+    "title": "OudyView",
+    "type": "library",
+    "version": "0.1.0",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/Oudmane/OudyView"
+    },
+    "authors": [
+        {
+            "name": "Ayoub Oudmane",
+            "email": "ayoub@oudmane.me"
+        }
+    ],
+    "require": {
+        "oudmane/oudyapi": "0.1.x"
+    }
+}
