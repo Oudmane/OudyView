@@ -1,10 +1,9 @@
-OudyView = {
+OudyView = jQuery.extend(true, {
     request: function(state) {
         if(!state)
             return;
         request = state;
         request.state = $.extend({}, state);
-        request.render = 'view';
         request.beforeSend = function(event) {
             $(OudyView.modal.dialog).html('<a class="uk-modal-close uk-close"></a><div><div class="uk-margin"><div class="uk-modal-spinner"></div></div>');
             OudyView.modal.show();
@@ -17,7 +16,7 @@ OudyView = {
         request.complete = function(event) {
             OudyView.events.complete(event);
         };
-        OudyAPI.send(request);
+        OudyView.send(request);
     },
     init: function(element) {
         OudyView.modal = UIkit.modal('[oudyview].uk-modal');
@@ -57,4 +56,4 @@ OudyView = {
         show: function(){},
         hide: function(){}
     }
-};
+}, OudyAPI);
