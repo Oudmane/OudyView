@@ -1,19 +1,18 @@
 {
     "name": "oudmane/oudyview",
-    "title": "OudyView",
     "type": "library",
-    "version": "0.1.3",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/Oudmane/OudyView"
-    },
+    "license": "MIT",
     "authors": [
         {
             "name": "Ayoub Oudmane",
             "email": "ayoub@oudmane.me"
         }
     ],
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/Oudmane/OudyView"
+    },
     "require": {
-        "oudmane/oudyapi": "0.1.*"
+        "oudmane/oudyapi": "*"
     }
 }
