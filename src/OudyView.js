@@ -1,59 +1,116 @@
-OudyView = jQuery.extend(true, {
-    request: function(state) {
-        if(!state)
-            return;
-        request = state;
-        request.state = $.extend({}, state);
-        request.beforeSend = function(event) {
-            $(OudyView.modal.dialog).html('<a class="uk-modal-close uk-close"></a><div><div class="uk-margin"><div class="uk-modal-spinner"></div></div>');
-            OudyView.modal.show();
-            OudyView.events.beforeSend(event);
-        };
-        request.success = function(view) {
-            $(OudyView.modal.dialog).html(view);
-            OudyView.events.render(view);
-        };
-        request.complete = function(event) {
-            OudyView.events.complete(event);
-        };
-        OudyView.send(request);
-    },
+var OudyView = {
+    state: null,
     init: function(element) {
-        OudyView.modal = UIkit.modal('[oudyview].uk-modal');
+        OudyView.modal = UIkit.modal('[oudyview].uk-modal', {center:true});
         OudyView.modal.on({
             'show.uk.modal': function(){
                 OudyView.events.show();
             },
             'hide.uk.modal': function(){
-                OudyView.events.hide();
+                if(!OudyView.forced)
+                    OudyView.events.hide();
+                OudyView.forced = false;
             }
         });
-        $(element).on('click', '[oudyview][href]', function() {
+        $(element).on('click', '[oudyview][href]:not([nov]):internal', function() {
             OudyView.request({
                 uri: $(this).URI()
             });
             return false;
         });
-        $(OudyView.modal.dialog).on('click', '[href]', function() {
-            OudyView.request({
-                uri: $(this).URI()
-            });
-            return false;
-        });
-        $(OudyView.modal.dialog).on('submit', '[action]:not([noj]):internal', function() {
+        $(element).on('submit', '[oudyview][action]:not([nov]):internal', function() {
             OudyView.request({
                 uri: $(this).URI(),
                 method: $(this).attr('method'),
-                data: $(this).serialize()
+                data: $(this).serializeObject()
             });
             return false;
         });
+        $(OudyView.modal.dialog).on('click', '[href]:not([nov]):internal', function() {
+            OudyView.request({
+                uri: $(this).URI()
+            });
+            return false;
+        });
+        $(OudyView.modal.dialog).on('submit', '[action]:not([nov]):internal', function() {
+            OudyView.request({
+                uri: $(this).URI(),
+                method: $(this).attr('method'),
+                data: $(this).serializeObject()
+            });
+            return false;
+        });
+        if(OudyJS) {
+            $(OudyView.modal.dialog).on('click', '[href][nov]:not([noj]):internal', function() {
+                OudyView.forced = true;
+                OudyView.modal.hide();
+                OudyJS.request({
+                    uri: $(this).URI(),
+                    push: true
+                });
+                return false;
+            });
+            $(OudyView.modal.dialog).on('submit', '[action][nov]:not([noj]):internal', function() {
+                OudyView.forced = true;
+                OudyView.modal.hide();
+                OudyJS.request({
+                    uri: $(this).URI(),
+                    method: $(this).attr('method'),
+                    data: $(this).serializeObject(),
+                    push: false
+                });
+                return false;
+            });
+        }
+        OudyAPI.callbacks['oudyview'] = this.render;
+    },
+    request: function(request) {
+        this.state = $.extend({}, request);
+        request.beforeSend = function(request) {
+            if(request) {
+                request.withCredentials = true;
+                request.setRequestHeader('Client', 'c');
+                request.setRequestHeader('Interface', 'oudyview');
+            }
+            $(OudyView.modal.dialog).html('<a class="uk-modal-close uk-close"></a><div><div class="uk-margin"><div class="uk-modal-spinner"></div></div>');
+            OudyView.modal.show();
+            OudyView.events.beforeSend(request);
+        };
+        request.id = 'oudyview';
+        request.render = 'oudyview';
+        request.success = this.render;
+        request.cache = false;
+        OudyAPI.send(request);
+    },
+    render: function(view) {
+        $(OudyView.modal.dialog).html(view);
+        OudyView.events.render(view);
+        OudyView.modal.resize();
     },
     events: {
-        beforeSend: function(event){},
-        complete: function(event){},
-        render: function(view){},
-        show: function(){},
-        hide: function(){}
+        open: function(event) {
+            
+        },
+        close: function(event) {
+            
+        },
+        message: function(event) {
+            
+        },
+        error: function(event) {
+            
+        },
+        beforeSend: function(request) {
+            
+        },
+        render: function(view) {
+            
+        },
+        show: function(view) {
+            
+        },
+        hide: function(view) {
+            
+        }
     }
-}, OudyAPI);
+};
