@@ -2,6 +2,22 @@ var OudyView = {
     state: null,
     init: function(element) {
         OudyView.modal = UIkit.modal('[oudyview].uk-modal', {center:true});
+        OudyView.modal.close = OudyView.modal.hide;
+        OudyView.modal.hide = function(force) {
+            if(
+                !(form = OudyView.modal.dialog.find('form:has([type="oudyview/confirm"])')).length
+                ||
+                form.data('serialize') == form.serialize()
+            )
+                OudyView.modal.close(force);
+            else
+                if(!form.data('confirm') || !form.data('confirm').isActive())
+                    form.data('confirm', UIkit.modal.confirm(form.find('[type="oudyview/confirm"]').html(), function() {
+                        OudyView.modal.close();
+                    }));
+                else
+                    form.data('confirm').hide();
+        };
         OudyView.modal.on({
             'show.uk.modal': function(){
                 OudyView.events.show();
@@ -84,6 +100,8 @@ var OudyView = {
     },
     render: function(view) {
         $(OudyView.modal.dialog).html(view);
+        if((form = OudyView.modal.dialog.find('form:has([type="oudyview/confirm"])')).length)
+            form.data('serialize', form.serialize());
         OudyView.events.render(view);
         OudyView.modal.resize();
     },
