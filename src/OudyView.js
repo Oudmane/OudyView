@@ -8,6 +8,8 @@ var OudyView = {
                 !(form = OudyView.modal.dialog.find('form:has([type="oudyview/confirm"])')).length
                 ||
                 form.data('serialize') == form.serialize()
+                &&
+                !form.is('[changed]')
             )
                 OudyView.modal.close(force);
             else
