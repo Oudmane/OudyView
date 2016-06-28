@@ -1,15 +1,16 @@
 var OudyView = {
     state: null,
+    reloadOnClose: false,
     init: function(element) {
         OudyView.modal = UIkit.modal('[oudyview].uk-modal', {center:true});
         OudyView.modal.close = OudyView.modal.hide;
         OudyView.modal.hide = function(force) {
             if(
-                !(form = OudyView.modal.dialog.find('form:has([type="oudyview/confirm"])')).length
+                !(form = OudyView.modal.dialog.find('form[oudyview-confirm]')).length
                 ||
                 form.data('serialize') == form.serialize()
                 &&
-                !form.is('[changed]')
+                !form.is('[oudyview-confirm="changed"]')
             )
                 OudyView.modal.close(force);
             else
@@ -27,6 +28,10 @@ var OudyView = {
             'hide.uk.modal': function(){
                 if(!OudyView.forced)
                     OudyView.events.hide();
+                if(OudyView.reloadOnClose) {
+                    OudyView.reloadOnClose = false;
+                    OudyView.events.reloadOnClose();
+                }
                 OudyView.forced = false;
             }
         });
@@ -85,52 +90,31 @@ var OudyView = {
     request: function(request) {
         this.state = $.extend({}, request);
         request.beforeSend = function(request) {
-            if(request) {
-                request.withCredentials = true;
-                request.setRequestHeader('Client', 'c');
-                request.setRequestHeader('Interface', 'oudyview');
-            }
             $(OudyView.modal.dialog).html('<a class="uk-modal-close uk-close"></a><div><div class="uk-margin"><div class="uk-modal-spinner"></div></div>');
             OudyView.modal.show();
             OudyView.events.beforeSend(request);
         };
-        request.id = 'oudyview';
-        request.render = 'oudyview';
-        request.success = this.render;
-        request.cache = false;
+        request.interface = 'oudyview';
         OudyAPI.send(request);
     },
     render: function(view) {
         $(OudyView.modal.dialog).html(view);
-        if((form = OudyView.modal.dialog.find('form:has([type="oudyview/confirm"])')).length)
-            form.data('serialize', form.serialize());
         OudyView.events.render(view);
         OudyView.modal.resize();
+        if((form = OudyView.modal.dialog.find('form[oudyview-confirm]')).length)
+            form.data('serialize', form.serialize());
+        if(OudyView.modal.dialog.find('[oudyview-confirm="reload"]').length)
+            OudyView.reloadOnClose = true;
     },
     events: {
-        open: function(event) {
-            
-        },
-        close: function(event) {
-            
-        },
-        message: function(event) {
-            
-        },
-        error: function(event) {
-            
-        },
-        beforeSend: function(request) {
-            
-        },
-        render: function(view) {
-            
-        },
-        show: function(view) {
-            
-        },
-        hide: function(view) {
-            
-        }
+        open: function(event) {},
+        close: function(event) {},
+        message: function(event) {},
+        error: function(event) {},
+        beforeSend: function(request) {},
+        render: function(view) {},
+        show: function(view) {},
+        hide: function(view) {},
+        reloadOnClose: function() {}
     }
 };
