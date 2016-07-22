@@ -90,9 +90,9 @@ var OudyView = {
     request: function(request) {
         this.state = $.extend({}, request);
         request.beforeSend = function(request) {
+            OudyView.events.beforeSend(request);
             $(OudyView.modal.dialog).html('<a class="uk-modal-close uk-close"></a><div><div class="uk-margin"><div class="uk-modal-spinner"></div></div>');
             OudyView.modal.show();
-            OudyView.events.beforeSend(request);
         };
         request.interface = 'oudyview';
         OudyAPI.send(request);
