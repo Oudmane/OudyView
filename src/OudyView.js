@@ -3,7 +3,17 @@ var OudyView = {
     reloadOnClose: false,
     init: function(element) {
         OudyView.modal = UIkit.modal('[oudyview].uk-modal', {center:true});
-        OudyView.modal.close = OudyView.modal.hide;
+        OudyView.modal.close = function(force) {
+            if (!force && UIkit.support.transition && this.hasTransitioned) {
+                var $this = this;
+                this.one(UIkit.support.transition.end, function() {
+                    $this._hide();
+                }).removeClass("uk-open");
+            } else {
+                this._hide();
+            }
+            return this;
+        };
         OudyView.modal.hide = function(force) {
             if(
                 !(form = OudyView.modal.dialog.find('form[oudyview-confirm]')).length
@@ -13,13 +23,13 @@ var OudyView = {
                 !form.is('[oudyview-confirm="changed"]')
             )
                 OudyView.modal.close(force);
-            else
-                if(!form.data('confirm') || !form.data('confirm').isActive())
-                    form.data('confirm', UIkit.modal.confirm(form.find('[type="oudyview/confirm"]').html(), function() {
-                        OudyView.modal.close();
-                    }));
-                else
-                    form.data('confirm').hide();
+            else if(!form.data('confirm') || !form.data('confirm').isActive())
+                form.data('confirm', UIkit.modal.confirm(form.find('[type="oudyview/confirm"]').html() || OudyView.strings.confirm.message, function() {
+                    OudyView.modal.close(force);
+                }));
+            else if(form.data('confirm'))
+                form.data('confirm').hide();
+            return this;
         };
         OudyView.modal.on({
             'show.uk.modal': function(){
@@ -116,5 +126,10 @@ var OudyView = {
         show: function(view) {},
         hide: function(view) {},
         reloadOnClose: function() {}
+    },
+    strings: {
+        confirm: {
+            message: '<h1>You\'ll lose  all changes</h1><p>Are you sure you want to close ?</p>'
+        }
     }
 };
