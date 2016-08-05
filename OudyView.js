@@ -81,7 +81,8 @@ module.exports = {
             });
             return false;
         });
-        if(OudyJS = __webpack_modules__[require.resolveWeak('oudyjs')]) {
+        if(require.cache[require.resolveWeak('oudyjs')]) {
+            var OudyJS = require('oudyjs');
             jQuery(OudyView.modal.dialog).on('click', '[href][nov]:not([noj]):internal', function() {
                 OudyView.forced = true;
                 OudyView.modal.hide();
