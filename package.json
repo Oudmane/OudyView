@@ -1,0 +1,29 @@
+{
+  "name": "oudyview",
+  "version": "1.0.0",
+  "description": "a JavaScript library to run request in a part in the page",
+  "main": "OudyView.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Oudmane/OudyView.git"
+  },
+  "keywords": [
+    "oudy",
+    "view",
+    "oudyview",
+    "oudmane"
+  ],
+  "author": "Ayoub Oudmane <ayoub@oudmane.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Oudmane/OudyView/issues"
+  },
+  "homepage": "https://github.com/Oudmane/OudyView#readme",
+  "dependencies": {
+    "form-serializer": "^2.5.0",
+    "jquery": "^3.1.0",
+    "oudyapi": "^1.0.0",
+    "oudyjs": "^1.0.0",
+    "uikit-rtl": "^1.0.0"
+  }
+}
