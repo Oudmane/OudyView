@@ -110,7 +110,7 @@ module.exports = {
         this.state = jQuery.extend({}, request);
         request.beforeSend = function(request) {
             OudyView.events.beforeSend(request);
-            jQuery(OudyView.modal.dialog).html('<a class="uk-modal-close uk-close"></a><div><div class="uk-margin"><div class="uk-modal-spinner"></div></div>');
+            jQuery(OudyView.modal.dialog).html('<a class="uk-modal-close uk-close"></a><div><div class="uk-margin"><div class="uk-modal-spinner"></div></div></div>');
             OudyView.modal.show();
         };
         request.interface = 'oudyview';
