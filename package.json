@@ -20,10 +20,10 @@
   },
   "homepage": "https://github.com/Oudmane/OudyView#readme",
   "dependencies": {
-    "form-serializer": "^2.5.0",
-    "jquery": "^3.1.0",
-    "oudyapi": "^1.0.0",
-    "oudyjs": "^1.0.0",
-    "uikit-rtl": "^1.0.0"
+    "form-serializer": "^2.5",
+    "jquery": "^3.1",
+    "oudyapi": "^1.1",
+    "oudyjs": "^1.1",
+    "uikit-rtl": "^1.0"
   }
 }
